@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="assets/css/print/receita.css" />
+	<link rel="stylesheet" type="text/css" href="assets/css/print/ficha.css" />
+	<title>Gerador de fichas</title>
+</head>
+<body>
+	
+	<section class="dashboard">
+		<div class="dashboard--item" data-key="0">
+			<span>FICHA</span>
+		</div>
+		<div class="dashboard--item" data-key="1">
+			<span>RECEITA</span>
+		</div>
+	</section>
+
+	<section class="fill--doc">
+		<div class="fill-doc--area">
+			<div class="header">
+				<button class="comeBack--btn" onclick="closeModal()">voltar</button>
+				<button class="remake--btn" onclick="permissionRemake()">REFAZER</button>
+				<button class="print--btn" onclick="printSheet()">IMPRIMIR</button>
+				<div class="permission--model">
+					<span>Deseja mesmo apagar tudo?</span>
+					<button onclick="remake(true)">Sim</button>
+					<button onclick="remake(false)">Nao</button>
+				</div>
+			</div>
+			<form class="form">
+				
+			</form>
+		</div>
+		<div class="fill-doc--img">
+			<img src="" />
+		</div>
+	</section>
+
+	<label class="model--label">
+		<span></span>
+		<input type="text" placeholder="Digite aqui" />
+	</label>
+
+	<aside class="ficha--print"> <!-- FICHA -->
+		<div class="f_header">
+			<img src="assets/images/logo.svg" />
+			<div class="f_header--info">
+				Ficha do animal
+			</div>
+		</div>
+		<div class="f_data--animal">
+			<div class="data">
+				
+			</div>
+		</div>
+	</aside>
+
+
+	<aside class="receita--print"> <!-- RECEITA -->
+		<div class="r_header">
+			<img src="assets/images/logo.svg" />
+			<pre class="r_header--info">
+				Pet Shop São Francisco
+				Rua Paulo Ferreira de Souza, Nº 8, Centro
+				Senhora dos Remédios - MG, CEP: 36275 - 000 
+				Telefone: (32) 98434 - 3399 CNPJ: 29993118000140
+			</pre>
+		</div>
+		<div class="r_page--title">
+			<span>Receita Veterinária</span>
+		</div>
+		<div class="r_data--animal">
+			<div class="data">
+				
+			</div>
+			<div class="r_data--medicines">
+				Medicamentos
+			</div>
+		</div>
+		<div class="r_data--doctor">
+			<div class="doctor--signature">
+				<span class="r_line"></span>
+				<span class="doctor--name">Médico veterinário</span>
+			</div>
+			<div class="date--area">
+				<span class="r_line"><span></span></span>
+				<span class="date--text">Data</span>
+			</div>
+		</div>
+	</aside>
+
+
+<script src="js/array.js"></script>
+<script src="js/script.js"></script>	
+</body>
+</html>
+
+
+

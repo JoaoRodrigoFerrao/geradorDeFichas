@@ -1,0 +1,50 @@
+@media only print {
+
+	section.dashboard, section.fill--doc {
+		display: none !important;
+	}
+
+	body {
+		background-color: #FFF;
+	}
+
+	aside.ficha--print .f_header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 40px 0 100px 0;
+	}
+	aside.ficha--print .f_header .f_header--info {
+		font-size: 30px;
+	}
+	aside.ficha--print .f_data--animal {
+
+	}
+	aside.ficha--print .f_data--animal .data {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 5px;
+	}
+	aside.ficha--print .f_data--animal .data .info {
+		flex: 1;
+		min-width: 49.6%;
+		height: 36px;
+		background-color: #EEE;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		padding-left: 10px;
+		border-radius: 5px;
+		font-size: 14px;
+	}
+	aside.ficha--print .f_data--animal .data .info:nth-child(9) {
+		min-width: 100%;
+		margin-top: 20px;
+	}
+	aside.ficha--print .f_data--animal .data .info span {
+		text-transform: uppercase;
+		padding-left: 10px;
+	}
+
+}
+	
