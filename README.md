@@ -1,1 +1,1 @@
-Sistema que gera fichas para impressão
+Sistema que gera fichas para impressão. (System that generates tokens for printing.)
