@@ -2,6 +2,7 @@ const q = (el)=> document.querySelector(el);
 const qa = (el)=> document.querySelectorAll(el);
 
 let receita, ficha = false;
+let date = false;
 
 qa(".dashboard--item").forEach(item=> {
     item.addEventListener("click", ()=> {
@@ -15,6 +16,9 @@ qa(".dashboard--item").forEach(item=> {
             geraReceita(inputReceita);
             ficha = false;
             receita = true;
+        }
+        if (key === '2') {
+            printEmptySheet();
         }
     })
 })
@@ -53,7 +57,8 @@ function geraReceita(array)
         q('form.form').append( inputModel );
     })
     sheetFields(array, 'receita');
-    geraData();
+    date = true;
+    geraData(date);
 }
 
 
@@ -132,12 +137,42 @@ function sheetFields(array, where)
     })
 }
 
-function geraData()
+function geraData(d)
+{   
+    if (d) {
+        var data = new Date();
+        let dia = String(data.getDate()).padStart(2, '0');
+        let mes = String(data.getMonth() + 1).padStart(2, '0');
+        let ano = data.getFullYear();
+        dataAtual = dia + '/' + mes + '/' + ano;
+        q("aside.receita--print .date--area .r_line span").innerHTML = dataAtual;
+    }
+}
+
+function printEmptySheet()
 {
-    var data = new Date();
-    let dia = String(data.getDate()).padStart(2, '0');
-    let mes = String(data.getMonth() + 1).padStart(2, '0');
-    let ano = data.getFullYear();
-    dataAtual = dia + '/' + mes + '/' + ano;
-    q("aside.receita--print .date--area .r_line span").innerHTML = dataAtual;
+    q(".option--print").style.display = 'flex';
+}
+function closeOptionPrint()
+{
+    q(".option--print").style.display = 'none';
+}
+
+function fichaEmpty()
+{
+   sheetFields(inputFicha, 'ficha');
+    q(".receita--print").style.display = 'none';
+    q(".ficha--print").style.display = 'block';
+    q("aside.receita--print .date--area .r_line span").innerHTML = '';
+    print();
+    closeOptionPrint();
+}
+function receitaEmpty()
+{
+    sheetFields(inputReceita, 'receita');
+    q(".ficha--print").style.display = 'none';
+    q(".receita--print").style.display = 'block';
+    q("aside.receita--print .date--area .r_line span").innerHTML = '';
+    print();
+    closeOptionPrint();
 }
