@@ -119,6 +119,7 @@ function printSheet()
 
 function sheetFields(array, where)
 {
+    q(`aside.${where}--print .data`).innerHTML = '';
     array.map(item=> {
         let div = document.createElement('div');
         let span = document.createElement('span');
