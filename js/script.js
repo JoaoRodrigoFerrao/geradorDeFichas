@@ -1,178 +1,208 @@
 const q = (el)=> document.querySelector(el);
 const qa = (el)=> document.querySelectorAll(el);
 
-let receita, ficha = false;
-let date = false;
+const itemsButton = qa(".dashboard--item");
+const modal = q(".fill--doc");
+const modalForm = q(".fill--doc .form");
+const modalImage = q(".fill-doc--img img");
+const btnBack = q(".comeBack--btn");
+const btnRemake = q(".remake--btn");
+const btnPrint = q(".print--btn");
+const fieldPermission = q(".permission--model");
+const btnPerm1 = q(".permission--model button.yes");
+const btnPerm2 = q(".permission--model button.no");
+const linkPrint = q('.linkPrint');
+const btnEmpty = qa(".empty--doc");
+let input = '';
 
-qa(".dashboard--item").forEach(item=> {
-    item.addEventListener("click", ()=> {
-        let key = item.getAttribute('data-key');
-        if (key === '0') {
-            geraFicha(inputFicha);
-            receita = false;
-            ficha = true;
-        }
-        if (key === '1') {
-            geraReceita(inputReceita);
-            ficha = false;
-            receita = true;
-        }
-        if (key === '2') {
-            printEmptySheet();
+let permission = false;
+let doc = '';
+
+itemsButton.forEach(btn=> {
+    btn.addEventListener('click', ()=> {
+        let key = btn.getAttribute('data-key');
+
+        if (key === '0') 
+        {   
+            generateDoc(inputFicha, 'ficha');
+            q('aside.receita--print').style.display = 'none';
+            q('aside.ficha--print').style.display = 'block';
+            doc = 'ficha'
+        } 
+        else if (key === '1')
+        {
+            generateDoc(inputReceita, 'receita');
+            q('aside.ficha--print').style.display = 'none';
+            q('aside.receita--print').style.display = 'block';
+            doc = 'receita';
         }
     })
 })
 
-function geraFicha(array)
-{
-    q('.fill-doc--img img').src = 'assets/images/ficha.png';
-    openModal();
+btnEmpty.forEach(btn=> {
+    btn.addEventListener('click', ()=> {
+        let key = btn.getAttribute('data-key');
 
-    q("form.form").innerHTML = '';
-
-    array.map(item=> {
-        let inputModel = q(".model--label").cloneNode(true);
-
-        inputModel.querySelector("span").innerHTML = `${item.name}:`;
-        inputModel.querySelector("input").setAttribute('data-key', item.cod);
-
-        q('form.form').append( inputModel );
+        if (key === '0') 
+        {   
+            printEmpty(inputFicha, 'ficha');
+        } 
+        else if (key === '1')
+        {
+            printEmpty(inputReceita, 'receita')
+        }
     })
-    sheetFields(array, 'ficha');
-}
+})
 
-function geraReceita(array)
+// Eventos
+
+btnBack.addEventListener("click", closeModal);
+btnRemake.addEventListener("click", ()=> fieldPermission.style.display = 'block');
+btnPerm1.addEventListener("click", ()=> remake(true));
+btnPerm2.addEventListener("click", ()=> remake(false));
+btnPrint.addEventListener("click", ()=> screenPrint());
+
+
+// Funçoes
+
+function generateDoc(array, name) 
 {
-    q('.fill-doc--img img').src = 'assets/images/receita.png';
     openModal();
-
-    q("form.form").innerHTML = '';
-
+    modalImage.src = `assets/images/${name}.png`;
+    modalForm.innerHTML = '';
+    q(`aside.${name}--print .data`).innerHTML = '';
     array.map(item=> {
-        let inputModel = q(".model--label").cloneNode(true);
+        // Gerar Inputs
+        let inputItem = q(".model--label").cloneNode(true);
 
-        inputModel.querySelector("span").innerHTML = `${item.name}:`;
-        inputModel.querySelector("input").setAttribute('data-key', item.cod);
+        inputItem.querySelector("span").innerHTML = `${item.name}:`;
+        inputItem.querySelector("input").setAttribute('data-key', item.cod);
+        if (item.type) {
+            inputItem.querySelector("input").setAttribute('class', item.type);
+        }
 
-        q('form.form').append( inputModel );
+        modalForm.append( inputItem );
+
+        // Gerar Campos Da Folha
+        let fieldItem = q(".model--field").cloneNode(true);
+
+        fieldItem.querySelector('span.field--name').innerHTML = `${item.name}:`;
+        fieldItem.setAttribute('data-key', item.cod);
+
+        q(`aside.${name}--print .data`).append( fieldItem );
     })
-    sheetFields(array, 'receita');
-    date = true;
-    geraData(date);
+    input = q('input.telMask');
+    input.setAttribute('maxlength', '15')
+    input.addEventListener("keyup", fillMask);
 }
-
-
-
-
 
 function openModal()
 {
-    q("section.fill--doc").style.display = 'flex';
-    setTimeout(()=> q(".fill-doc--area .form").classList.add('classForm'), 100);
+    modal.style.display = 'flex';
+    setTimeout(()=> modalForm.classList.add('classForm'), 100);
 }
+
 function closeModal() 
 {
-    q(".fill-doc--area .form").classList.remove('classForm');
-    setTimeout(()=> q("section.fill--doc").style.display = 'none', 100);
+    modalForm.classList.remove('classForm');
+    setTimeout(()=> modal.style.display = 'none', 100);
 }
 
-
-function permissionRemake()
+function remake(v)
 {
-    q('.permission--model').style.display = 'block';
-}
-function remake(p)
-{   
-    if (p) {
-        qa('form.form input').forEach(ipt=> {
+    if (v) 
+    {   
+        modalForm.querySelectorAll('input').forEach(ipt=> {
             ipt.value = '';
         })
-        q('.permission--model').style.display = 'none';
-    } else {
-        q('.permission--model').style.display = 'none';
+        fieldPermission.style.display = 'none';
+    }
+    else 
+    {
+        fieldPermission.style.display = 'none';
     }
 }
 
-function printSheet()
+function screenPrint()
 {
-    let array = [];
-    if (ficha) {
-        q(".receita--print").style.display = 'none';
-        q(".ficha--print").style.display = 'block';
+    let l = '';
+    switch (doc) 
+    {
+        case 'ficha':
+            l = 'assets/css/print/ficha.css';
+            break;
+        case 'receita':
+            l = 'assets/css/print/receita.css';
+            break;
     }
-    if (receita) {
-        q(".ficha--print").style.display = 'none';
-        q(".receita--print").style.display = 'block';
-    }
+    linkPrint.href = l;
 
-    let inputs = qa("form.form input");
-    let fields = qa(".data .info");
+    let inputs = qa(`.fill--doc form .model--label input`);
+    let fields = qa(`.${doc}--print .model--field`);
 
     inputs.forEach(ipt=> {
-        let keyIpt = ipt.getAttribute('data-key');
+        let keyinput = ipt.getAttribute('data-key');
         fields.forEach(fld=> {
-            let keyFld = fld.getAttribute('data-key');
-            if (keyFld == keyIpt) {
-                fld.querySelector("span").innerHTML = ipt.value;
+            let keyField = fld.getAttribute('data-key');
+            if (keyField === keyinput) {
+                fld.querySelector('span.value').innerHTML = ipt.value;
             }
         })
     })
 
-    print();
+    generateDate();
+    setTimeout(()=> print(), 100);
 }
 
-
-function sheetFields(array, where)
+function generateDate()
 {
-    q(`aside.${where}--print .data`).innerHTML = '';
+    let data = new Date();
+    let dia = String(data.getDate()).padStart(2, '0');
+    let mes = String(data.getMonth() + 1).padStart(2, '0');
+    let ano = data.getFullYear();
+    dataAtual = dia + '/' + mes + '/' + ano;
+    q("aside.receita--print .date--area .r_line span").innerHTML = dataAtual;
+}
+
+function printEmpty(array, name) 
+{
+    let dNot = '';
+    q(`aside.${name}--print .data`).innerHTML = '';
+
     array.map(item=> {
-        let div = document.createElement('div');
-        let span = document.createElement('span');
-        div.innerHTML = `${item.name}:`;
-        div.setAttribute("data-key", item.cod);
-        div.setAttribute("class", 'info');
-        div.appendChild( span );
+        // Gerar Campos Da Folha
+        let fieldItem = q(".model--field").cloneNode(true);
 
-        q(`aside.${where}--print .data`).appendChild( div );
+        fieldItem.querySelector('span.field--name').innerHTML = `${item.name}:`;
+        fieldItem.setAttribute('data-key', item.cod);
+
+        q(`aside.${name}--print .data`).append( fieldItem );
     })
-}
 
-function geraData(d)
-{   
-    if (d) {
-        var data = new Date();
-        let dia = String(data.getDate()).padStart(2, '0');
-        let mes = String(data.getMonth() + 1).padStart(2, '0');
-        let ano = data.getFullYear();
-        dataAtual = dia + '/' + mes + '/' + ano;
-        q("aside.receita--print .date--area .r_line span").innerHTML = dataAtual;
+    switch (name) 
+    {
+        case 'ficha':
+            dNot = 'receita';
+            break;
+        case 'receita':
+            dNot = 'ficha';
+            break;
     }
+    linkPrint.href = `assets/css/print/${name}.css`;;
+
+    q(`aside.${dNot}--print`).style.display = 'none';
+    q(`aside.${name}--print`).style.display = 'block';
+    setTimeout(()=> print(), 100);
 }
 
-function printEmptySheet()
-{
-    q(".option--print").style.display = 'flex';
-}
-function closeOptionPrint()
-{
-    q(".option--print").style.display = 'none';
-}
 
-function fichaEmpty()
+   
+function fillMask() 
 {
-   sheetFields(inputFicha, 'ficha');
-    q(".receita--print").style.display = 'none';
-    q(".ficha--print").style.display = 'block';
-    q("aside.receita--print .date--area .r_line span").innerHTML = '';
-    print();
-    closeOptionPrint();
-}
-function receitaEmpty()
-{
-    sheetFields(inputReceita, 'receita');
-    q(".ficha--print").style.display = 'none';
-    q(".receita--print").style.display = 'block';
-    q("aside.receita--print .date--area .r_line span").innerHTML = '';
-    print();
-    closeOptionPrint();
+    let v = input.value;
+    if (v.length == 2) {
+        input.value = `(${v}) `;
+    } else if (v.length == 10) {
+        input.value += '-';
+    }
 }

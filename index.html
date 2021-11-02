@@ -3,39 +3,34 @@
 <head>
 	<meta charset="utf-8" />
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="assets/css/print/receita.css" />
-	<link rel="stylesheet" type="text/css" href="assets/css/print/ficha.css" />
+	<link rel="stylesheet" type="text/css" href="" class="linkPrint" />
 	<title>Gerador de fichas</title>
 </head>
 <body>
 	
 	<section class="dashboard">
-		<div class="dashboard--item" data-key="0">
-			<span>FICHA</span>
-		</div>
-		<div class="dashboard--item" data-key="1">
-			<span>RECEITA</span>
-		</div>
-		<span class="dashboard--item" data-key="2">
-			<span>FOLHA LIMPA</span>
-		</span>
-		<div class="option--print">
-			<div class="close" onclick="closeOptionPrint()"><<</div>
-			<button onclick="fichaEmpty();">FICHA</button>
-			<button onclick="receitaEmpty()">RECEITA</button>
+		<button class="dashboard--item" data-key="0">FICHA</button>
+		<button class="dashboard--item" data-key="1">RECEITA</button>
+		<div class="dashboard--item empty--sheet">IMPRIMIR FOLHA VAZIA
+			<div class="options">
+				<button class="empty--doc" data-key="0">FICHA</button>
+				<button class="empty--doc" data-key="1">RECEITA</button>
+			</div>
 		</div>
 	</section>
 
 	<section class="fill--doc">
 		<div class="fill-doc--area">
 			<div class="header">
-				<button class="comeBack--btn" onclick="closeModal()">voltar</button>
-				<button class="remake--btn" onclick="permissionRemake()">REFAZER</button>
-				<button class="print--btn" onclick="printSheet()">IMPRIMIR</button>
+				<button class="comeBack--btn">voltar</button>
+				<button class="remake--btn">REFAZER</button>
+				<button class="print--btn">IMPRIMIR</button>
 				<div class="permission--model">
-					<span>Deseja mesmo apagar tudo?</span>
-					<button onclick="remake(true)">Sim</button>
-					<button onclick="remake(false)">Nao</button>
+					<div class="cont">
+						<span>Deseja mesmo apagar tudo?</span>
+						<button class="yes">Sim</button>
+						<button class="no">Nao</button>
+					</div>
 				</div>
 			</div>
 			<form class="form">
@@ -51,6 +46,10 @@
 		<span></span>
 		<input type="text" placeholder="Digite aqui" />
 	</label>
+	<div class="model--field">
+		<span class="field--name"></span>
+		<span class="value"></span>
+	</div>
 
 	<aside class="ficha--print"> <!-- FICHA -->
 		<div class="f_header">
@@ -60,9 +59,7 @@
 			</div>
 		</div>
 		<div class="f_data--animal">
-			<div class="data">
-				
-			</div>
+			<div class="data"></div>
 		</div>
 	</aside>
 

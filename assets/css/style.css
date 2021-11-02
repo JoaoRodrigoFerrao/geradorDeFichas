@@ -14,7 +14,7 @@
 img {
 	width: 100px;
 }
-.model--label {
+.model--label, .model--field {
 	display: none;
 }
 aside.receita--print, aside.ficha--print {
@@ -22,8 +22,18 @@ aside.receita--print, aside.ficha--print {
 }
 .permission--model {
 	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+.permission--model .cont {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	position: absolute;
-	top: 50px;
+	top: 10px;
 	left: 200px;
 	padding: 20px 10px;
 	background-color: #FFF;
@@ -33,9 +43,6 @@ aside.receita--print, aside.ficha--print {
 }
 .permission--model span {
 	font-weight: bold;
-}
-.permission--model button:first-child {
-	display: block;
 }
 .permission--model button {
 	margin-top: 10px;
@@ -47,61 +54,66 @@ body {
 	overflow: hidden;
 }
 
+/* DashBoard */
 section.dashboard {
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: inherit;
-	gap: 40px;
+	gap: 20px;
 }
 section.dashboard .dashboard--item {
-	width: 170px;
-	background-color: var(--white);
-	border-radius: 20px;
-	border:  1px solid var(--dark-gray);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-between;
-	padding: 20px 0;
-	cursor: pointer;
-	font-weight: bold;
-	transition: all ease .1s;
-}
-section.dashboard .dashboard--item:hover {
-	background-color: var(--black);
-	color: var(--white);
-}
-
-section.dashboard .option--print {
-	position: absolute;
-	transform: translateX(210px);
-	background-color: #FFF;
-	box-shadow: 0px 0px 20px #999;
-	display: none;
-	flex-direction: column;
-	padding: 20px 10px;
-	border-radius: 10px;
-	gap: 10px;
-}
-section.dashboard .option--print .close {
-	padding: 10px;
-	cursor: pointer;
-	font-weight: bold;
-	border-radius: 10px;
-}
-section.dashboard .option--print button {
-	width: 140px;
+	min-width: 140px;
+	width: auto;
 	height: 40px;
-	border-radius: 10px;
 	border: 1px solid #AAA;
 	background-color: #FFF;
+	border-radius: 10px;
 	font-weight: bold;
+	font-size: 14px;
+	padding: 0 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: all ease .1s;
 	cursor: pointer;
 }
-section.dashboard .option--print button:hover, section.dashboard .option--print .close:hover {
-	background-color: var(--black);
-	color: var(--white);
+section.dashboard .dashboard--item:not(.empty--sheet):hover {
+	background-color: #000;
+	color: #FFF;
+}
+section.dashboard .dashboard--item.empty--sheet {
+	flex-direction: column;
+	position: relative;
+	margin-left: 40px;
+}
+section.dashboard .options {
+	box-sizing: content-box;
+	display: none;
+	flex-direction: column;
+	background-color: #FFF;
+	border: 1px solid #AAA;
+	width: 181px;
+	padding: 16px 0;
+	position: absolute;
+	margin-top: 116px;
+	border-top: none;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+section.dashboard .options button {
+	width: inherit;
+	height: 36px;
+	background-color: #FFF;
+	border: none;
+	cursor: pointer;
+}
+section.dashboard .options button:hover {
+	background-color: #000;
+	color: #FFF;
+}
+section.dashboard .dashboard--item.empty--sheet:hover  .options {
+	display: flex;
 }
 
 section.fill--doc {
@@ -213,7 +225,10 @@ section.fill--doc .fill-doc--area .form label input::placeholder {
 	box-shadow: 0px 0px 20px var(--black-shadow);
 	width: 400px;
 }
-
+.fill-doc--img h1 {
+	position: absolute;
+	transform: translateY(-270px);
+}
 
 
 
@@ -227,3 +242,5 @@ section.fill--doc .fill-doc--area .form label input::placeholder {
 ::-webkit-scrollbar {
 	width: 0;
 }
+
+
